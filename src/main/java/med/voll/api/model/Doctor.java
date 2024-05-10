@@ -5,7 +5,7 @@ import lombok.*;
 import med.voll.api.type.Specialty;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"crm"})})
 @Getter
 @ToString
 @NoArgsConstructor
