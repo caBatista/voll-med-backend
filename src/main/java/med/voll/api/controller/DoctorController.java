@@ -9,6 +9,7 @@ import med.voll.api.model.Doctor;
 import med.voll.api.service.DoctorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class DoctorController {
 	}
 	
 	@GetMapping
-	public Page<DoctorResponseDTO> findAll(Pageable pageable){
+	public Page<DoctorResponseDTO> findAll(@PageableDefault(size=10) Pageable pageable){
 		return doctorService.findAll(pageable);
 	}
 }
