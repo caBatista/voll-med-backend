@@ -7,6 +7,8 @@ import med.voll.api.dto.DoctorRequestDTO;
 import med.voll.api.dto.DoctorResponseDTO;
 import med.voll.api.model.Doctor;
 import med.voll.api.service.DoctorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class DoctorController {
 	}
 	
 	@GetMapping
-	public List<DoctorResponseDTO> findAll(){
-		return doctorService.findAll();
+	public Page<DoctorResponseDTO> findAll(Pageable pageable){
+		return doctorService.findAll(pageable);
 	}
 }

@@ -6,6 +6,8 @@ import med.voll.api.dto.DoctorResponseDTO;
 import med.voll.api.model.Address;
 import med.voll.api.model.Doctor;
 import med.voll.api.repository.DoctorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,11 +39,7 @@ public class DoctorService {
 		return doctorRepository.save(doctorToSave);
 	}
 	
-	public List<DoctorResponseDTO> findAll(){
-		var doctors = doctorRepository.findAll();
-		
-		return doctors.stream()
-				.map(DoctorResponseDTO::new)
-				.toList();
+	public Page<DoctorResponseDTO> findAll(Pageable pageable){
+		return doctorRepository.findAll(pageable).map(DoctorResponseDTO::new);
 	}
 }
