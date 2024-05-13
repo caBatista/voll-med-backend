@@ -1,8 +1,9 @@
 package med.voll.api.service;
 
 import lombok.RequiredArgsConstructor;
-import med.voll.api.dto.DoctorRequestDTO;
+import med.voll.api.dto.DoctorCrRequestDTO;
 import med.voll.api.dto.DoctorResponseDTO;
+import med.voll.api.dto.DoctorUpRequestDTO;
 import med.voll.api.model.Address;
 import med.voll.api.model.Doctor;
 import med.voll.api.repository.DoctorRepository;
@@ -10,14 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
 	private final DoctorRepository doctorRepository;
 	
-	public Doctor createDoctor(DoctorRequestDTO doctorDTO) {
+	public Doctor createDoctor(DoctorCrRequestDTO doctorDTO) {
 		Address addressToSave = Address.builder()
 				.street(doctorDTO.address().street())
 				.zipCode(doctorDTO.address().zipCode())
@@ -41,5 +40,14 @@ public class DoctorService {
 	
 	public Page<DoctorResponseDTO> findAll(Pageable pageable){
 		return doctorRepository.findAll(pageable).map(DoctorResponseDTO::new);
+	}
+	
+	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {
+		var doctor = doctorRepository.findById(doctorDTO.id())
+				.orElseThrow();
+		
+		doctor.update(doctorDTO);
+		
+		return doctor;
 	}
 }

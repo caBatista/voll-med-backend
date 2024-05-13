@@ -2,6 +2,7 @@ package med.voll.api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import med.voll.api.dto.DoctorUpRequestDTO;
 import med.voll.api.type.Specialty;
 
 @Entity
@@ -29,4 +30,12 @@ public class Doctor {
 	@Embedded
 	private Address address;
 	
+	public void update(DoctorUpRequestDTO doctorDTO) {
+		if(doctorDTO.name() != null)
+			this.name = doctorDTO.name();
+		if(doctorDTO.phoneNumber() != null)
+			this.phoneNumber = doctorDTO.phoneNumber();
+		if(doctorDTO.address() != null)
+			this.address.update(doctorDTO.address());
+	}
 }

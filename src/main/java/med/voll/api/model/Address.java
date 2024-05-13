@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.dto.AddressDTO;
 
 @Embeddable
 @Getter
@@ -18,4 +19,19 @@ public class Address {
 	private String complement;
 	private String city;
 	private String state;
+	
+	public void update(AddressDTO address) {
+		if(address.street() != null)
+			this.street = address.street();
+		if(address.zipCode() != null)
+			this.zipCode = address.zipCode();
+		if(address.number() != null)
+			this.number = address.number();
+		if(address.complement() != null)
+			this.complement = address.complement();
+		if(address.city() != null)
+			this.city = address.city();
+		if(address.state() != null)
+			this.state = address.state();
+	}
 }
