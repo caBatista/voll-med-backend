@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import med.voll.api.dto.DoctorUpRequestDTO;
 import med.voll.api.type.Specialty;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"crm"})})
@@ -30,6 +31,8 @@ public class Doctor {
 	@Embedded
 	private Address address;
 	
+	private boolean active = true;
+	
 	public void update(DoctorUpRequestDTO doctorDTO) {
 		if(doctorDTO.name() != null)
 			this.name = doctorDTO.name();
@@ -37,5 +40,10 @@ public class Doctor {
 			this.phoneNumber = doctorDTO.phoneNumber();
 		if(doctorDTO.address() != null)
 			this.address.update(doctorDTO.address());
+	}
+	
+	public void delete() {
+		this.active = false;
+		System.out.println("Doctor " + this.name + " deleted");
 	}
 }

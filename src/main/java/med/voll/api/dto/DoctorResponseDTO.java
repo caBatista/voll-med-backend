@@ -8,7 +8,8 @@ public record DoctorResponseDTO(
 	String name,
 	String email,
 	String crm,
-	Specialty specialty
+	Specialty specialty,
+	Boolean active
 ){
 	public DoctorResponseDTO(Doctor doctor){
 		this(
@@ -16,8 +17,8 @@ public record DoctorResponseDTO(
 			doctor.getName(),
 			doctor.getEmail(),
 			doctor.getCrm(),
-			doctor.getSpecialty()
+			doctor.getSpecialty(),
+			doctor.isActive()
 		);
 	}
-	
 }

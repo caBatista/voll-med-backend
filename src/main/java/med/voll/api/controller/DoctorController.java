@@ -35,4 +35,10 @@ public class DoctorController {
 	public Doctor updateDoctor(@RequestBody @Valid DoctorUpRequestDTO doctorDTO) {
 		return doctorService.updateDoctor(doctorDTO);
 	}
+	
+	@DeleteMapping("{id}")
+	@Transactional
+	public void deleteDoctor(@PathVariable Long id) {
+		doctorService.deleteDoctor(id);
+	}
 }

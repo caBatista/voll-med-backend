@@ -39,7 +39,7 @@ public class DoctorService {
 	}
 	
 	public Page<DoctorResponseDTO> findAll(Pageable pageable){
-		return doctorRepository.findAll(pageable).map(DoctorResponseDTO::new);
+		return doctorRepository.findAllByActiveTrue(pageable);
 	}
 	
 	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {
@@ -49,5 +49,12 @@ public class DoctorService {
 		doctor.update(doctorDTO);
 		
 		return doctor;
+	}
+	
+	public void deleteDoctor(Long id) {
+		var doctor = doctorRepository.findById(id)
+				.orElseThrow();
+		
+		doctor.delete();
 	}
 }
