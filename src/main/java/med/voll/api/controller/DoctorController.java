@@ -11,7 +11,9 @@ import med.voll.api.service.DoctorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/doctor")
@@ -21,24 +23,43 @@ public class DoctorController {
 	
 	@PostMapping
 	@Transactional
-	public Doctor createDoctor(@RequestBody @Valid DoctorCrRequestDTO doctorDTO) {
-		return doctorService.createDoctor(doctorDTO);
+	public ResponseEntity<DoctorResponseDTO> createDoctor(@RequestBody @Valid DoctorCrRequestDTO doctorDTO, UriComponentsBuilder uriBuilder) {
+		var doctor = doctorService.createDoctor(doctorDTO);
+		
+		var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+		var dto = new DoctorResponseDTO(doctor);
+		
+		return ResponseEntity.created(uri).body(dto);
 	}
 	
 	@GetMapping
-	public Page<DoctorResponseDTO> findAll(@PageableDefault(size=10) Pageable pageable){
-		return doctorService.findAll(pageable);
+	public ResponseEntity<Page<DoctorResponseDTO>> findAll(@PageableDefault(size=10) Pageable pageable){
+		var page = doctorService.findAll(pageable);
+		
+		return ResponseEntity.ok(page);
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id){
+		var dto = doctorService.findById(id);
+		
+		return ResponseEntity.ok(dto);
 	}
 	
 	@PutMapping
 	@Transactional
-	public Doctor updateDoctor(@RequestBody @Valid DoctorUpRequestDTO doctorDTO) {
-		return doctorService.updateDoctor(doctorDTO);
+	public ResponseEntity<DoctorResponseDTO> updateDoctor(@RequestBody @Valid DoctorUpRequestDTO doctorDTO) {
+		var doctor = doctorService.updateDoctor(doctorDTO);
+		var dto = new DoctorResponseDTO(doctor);
+		
+		return ResponseEntity.ok(dto);
 	}
 	
 	@DeleteMapping("{id}")
 	@Transactional
-	public void deleteDoctor(@PathVariable Long id) {
+	public ResponseEntity deleteDoctor(@PathVariable Long id) {
 		doctorService.deleteDoctor(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 }

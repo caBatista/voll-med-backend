@@ -33,6 +33,7 @@ public class DoctorService {
 				.crm(doctorDTO.crm())
 				.specialty(doctorDTO.specialty())
 				.address(addressToSave)
+				.active(true)
 				.build();
 		
 		return doctorRepository.save(doctorToSave);
@@ -40,6 +41,10 @@ public class DoctorService {
 	
 	public Page<DoctorResponseDTO> findAll(Pageable pageable){
 		return doctorRepository.findAllByActiveTrue(pageable);
+	}
+	
+	public DoctorResponseDTO findById(Long id){
+		return doctorRepository.findByIdAndActiveTrue(id);
 	}
 	
 	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {
