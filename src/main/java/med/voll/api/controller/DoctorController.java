@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.module.FindException;
+
 @RestController
 @RequestMapping("/doctor")
 @RequiredArgsConstructor
@@ -36,12 +38,20 @@ public class DoctorController {
 	public ResponseEntity<Page<DoctorResponseDTO>> findAll(@PageableDefault(size=10) Pageable pageable){
 		var page = doctorService.findAll(pageable);
 		
+		if(page.getTotalElements() == 0){
+			return ResponseEntity.notFound().build();
+		}
+		
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("{id}")
 	public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id){
 		var dto = doctorService.findById(id);
+		
+		if(dto == null){
+			return ResponseEntity.notFound().build();
+		}
 		
 		return ResponseEntity.ok(dto);
 	}
