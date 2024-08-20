@@ -35,6 +35,7 @@ dependencies {
 	implementation(kotlin("stdlib-jdk8"))
 	runtimeOnly("org.postgresql:postgresql")
 	implementation("com.auth0:java-jwt:4.4.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 }
 
 tasks.withType<Test> {
