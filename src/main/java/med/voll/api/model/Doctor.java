@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import med.voll.api.dto.DoctorUpRequestDTO;
 import med.voll.api.type.Specialty;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"crm"})})

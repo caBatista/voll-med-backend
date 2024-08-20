@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.DoctorCrRequestDTO;
 import med.voll.api.dto.DoctorResponseDTO;
 import med.voll.api.dto.DoctorUpRequestDTO;
-import med.voll.api.model.Doctor;
 import med.voll.api.service.DoctorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.lang.module.FindException;
 
 @RestController
 @RequestMapping("/doctor")
@@ -35,7 +32,7 @@ public class DoctorController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<DoctorResponseDTO>> findAll(@PageableDefault(size=10) Pageable pageable){
+	public ResponseEntity<Page<DoctorResponseDTO>> findAll(@PageableDefault() Pageable pageable) {
 		var page = doctorService.findAll(pageable);
 		
 		if(page.getTotalElements() == 0){
