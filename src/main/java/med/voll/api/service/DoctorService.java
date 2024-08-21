@@ -44,7 +44,9 @@ public class DoctorService {
 	}
 	
 	public DoctorResponseDTO findById(Long id){
-		return doctorRepository.findByIdAndActiveTrue(id);
+		var doctor = doctorRepository.findByIdAndActiveTrue(id);
+		
+		return new DoctorResponseDTO(doctor);
 	}
 	
 	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {

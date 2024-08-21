@@ -31,9 +31,9 @@ public class AuthController {
 		var authenticationToken = new UsernamePasswordAuthenticationToken(userLoginDTO.username(), userLoginDTO.password());
 		var authentication = authenticationManager.authenticate(authenticationToken);
 		
-		var JwtToken = tokenService.generateToken((User) authentication.getPrincipal());
+		var jwtToken = tokenService.generateToken((User) authentication.getPrincipal());
 		
-		return ResponseEntity.ok(new JwtTokenDTO(JwtToken).token());
+		return ResponseEntity.ok(new JwtTokenDTO(jwtToken).token());
 		
 	}
 }

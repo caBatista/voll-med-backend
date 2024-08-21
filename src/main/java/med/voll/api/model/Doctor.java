@@ -43,6 +43,5 @@ public class Doctor {
 	
 	public void delete() {
 		this.active = false;
-		System.out.println("Doctor " + this.name + " deleted");
 	}
 }

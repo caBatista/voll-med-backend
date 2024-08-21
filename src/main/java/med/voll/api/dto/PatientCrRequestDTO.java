@@ -1,5 +1,6 @@
 package med.voll.api.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,6 +13,6 @@ public record PatientCrRequestDTO(
 	String phoneNumber,
 	@NotBlank
 	String cpf,
-	@NotNull
+	@NotNull @Valid
 	AddressDTO address
 ){}
