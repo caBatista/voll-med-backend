@@ -35,4 +35,8 @@ public class Patient {
 			this.address.update(patientDTO.address());
 		
 	}
+	
+	public void delete() {
+		this.active = false;
+	}
 }
