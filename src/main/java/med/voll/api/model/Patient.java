@@ -1,7 +1,9 @@
 package med.voll.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
+import med.voll.api.dto.PatientUpRequestDTO;
 
 @Entity
 @Table(name = "patients")
@@ -23,4 +25,14 @@ public class Patient {
 	private Address address;
 	
 	private boolean active = true;
+	
+	public void update(@Valid PatientUpRequestDTO patientDTO) {
+		if(patientDTO.name() != null)
+			this.name = patientDTO.name();
+		if(patientDTO.phoneNumber() != null)
+			this.phoneNumber = patientDTO.phoneNumber();
+		if(patientDTO.address() != null)
+			this.address.update(patientDTO.address());
+		
+	}
 }

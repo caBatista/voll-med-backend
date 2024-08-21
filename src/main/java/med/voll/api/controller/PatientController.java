@@ -1,9 +1,11 @@
 package med.voll.api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.PatientCrRequestDTO;
 import med.voll.api.dto.PatientResponseDTO;
+import med.voll.api.dto.PatientUpRequestDTO;
 import med.voll.api.service.PatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +49,14 @@ public class PatientController {
 		if(patient == null){
 			return ResponseEntity.notFound().build();
 		}
+		
+		return ResponseEntity.ok(patient);
+	}
+	
+	@PutMapping
+	@Transactional
+	public ResponseEntity<PatientResponseDTO> updatePatient(@RequestBody @Valid PatientUpRequestDTO patientDTO) {
+		var patient = patientService.updatePatient(patientDTO);
 		
 		return ResponseEntity.ok(patient);
 	}

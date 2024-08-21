@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.PatientCrRequestDTO;
 import med.voll.api.dto.PatientResponseDTO;
+import med.voll.api.dto.PatientUpRequestDTO;
 import med.voll.api.model.Address;
 import med.voll.api.model.Patient;
 import med.voll.api.repository.PatientRepository;
@@ -46,5 +47,16 @@ public class PatientService {
 	
 	public PatientResponseDTO findById(Long id) {
 		return patientRepository.findByIdAndActiveTrue(id);
+	}
+	
+	public PatientResponseDTO updatePatient(@Valid PatientUpRequestDTO patientDTO) {
+		var patient = patientRepository.findById(patientDTO.id())
+				.orElseThrow();
+		
+		patient.update(patientDTO);
+		
+		var dto = new PatientResponseDTO(patient);
+		
+		return dto;
 	}
 }
