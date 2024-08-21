@@ -60,4 +60,12 @@ public class PatientController {
 		
 		return ResponseEntity.ok(patient);
 	}
+	
+	@DeleteMapping("{id}")
+	@Transactional
+	public ResponseEntity deletePatient(@PathVariable Long id) {
+		patientService.deletePatient(id);
+		
+		return ResponseEntity.noContent().build();
+	}
 }

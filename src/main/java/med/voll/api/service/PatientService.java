@@ -59,4 +59,11 @@ public class PatientService {
 		
 		return dto;
 	}
+	
+	public void deletePatient(Long id) {
+		var patient = patientRepository.findById(id)
+				.orElseThrow();
+		
+		patient.delete();
+	}
 }
