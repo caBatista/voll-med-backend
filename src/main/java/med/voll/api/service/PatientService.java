@@ -38,7 +38,6 @@ public class PatientService {
 				.build();
 		
 		return patientRepository.save(patientToSave);
-		
 	}
 	
 	public Page<PatientResponseDTO> findAll(Pageable pageable) {
@@ -46,7 +45,9 @@ public class PatientService {
 	}
 	
 	public PatientResponseDTO findById(Long id) {
-		return patientRepository.findByIdAndActiveTrue(id);
+		var patient = patientRepository.findByIdAndActiveTrue(id);
+		
+		return new PatientResponseDTO(patient);
 	}
 	
 	public PatientResponseDTO updatePatient(@Valid PatientUpRequestDTO patientDTO) {
@@ -55,9 +56,7 @@ public class PatientService {
 		
 		patient.update(patientDTO);
 		
-		var dto = new PatientResponseDTO(patient);
-		
-		return dto;
+		return new PatientResponseDTO(patient);
 	}
 	
 	public void deletePatient(Long id) {
