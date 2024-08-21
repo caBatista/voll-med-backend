@@ -45,9 +45,9 @@ public class PatientService {
 	}
 	
 	public PatientResponseDTO findById(Long id) {
-		var patient = patientRepository.findByIdAndActiveTrue(id);
+		var patientOptional = patientRepository.findByIdAndActiveTrue(id);
 		
-		return new PatientResponseDTO(patient);
+		return patientOptional.isPresent() ? new PatientResponseDTO(patientOptional.get()) : null;
 	}
 	
 	public PatientResponseDTO updatePatient(@Valid PatientUpRequestDTO patientDTO) {

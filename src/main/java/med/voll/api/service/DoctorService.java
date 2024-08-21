@@ -44,9 +44,9 @@ public class DoctorService {
 	}
 	
 	public DoctorResponseDTO findById(Long id){
-		var doctor = doctorRepository.findByIdAndActiveTrue(id);
+		var doctorOptional = doctorRepository.findByIdAndActiveTrue(id);
 		
-		return new DoctorResponseDTO(doctor);
+		return doctorOptional.isPresent() ? new DoctorResponseDTO(doctorOptional.get()) : null;
 	}
 	
 	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {
