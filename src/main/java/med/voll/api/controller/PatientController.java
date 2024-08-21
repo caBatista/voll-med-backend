@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.PatientCrRequestDTO;
 import med.voll.api.dto.PatientResponseDTO;
 import med.voll.api.service.PatientService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -27,5 +27,27 @@ public class PatientController {
 		var dto = new PatientResponseDTO(patient);
 		
 		return ResponseEntity.created(uri).body(dto);
+	}
+	
+	@GetMapping
+	public ResponseEntity<Page<PatientResponseDTO>> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+		var patients = patientService.findAll(pageable);
+		
+		if(patients.isEmpty()){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(patients);
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<PatientResponseDTO> findById(@PathVariable Long id){
+		var patient = patientService.findById(id);
+		
+		if(patient == null){
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(patient);
 	}
 }
