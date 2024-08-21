@@ -3,9 +3,12 @@ package med.voll.api.service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.PatientCrRequestDTO;
+import med.voll.api.dto.PatientResponseDTO;
 import med.voll.api.model.Address;
 import med.voll.api.model.Patient;
 import med.voll.api.repository.PatientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,9 +33,18 @@ public class PatientService {
 				.phoneNumber(patientDTO.phoneNumber())
 				.cpf(patientDTO.cpf())
 				.address(addressToSave)
+				.active(true)
 				.build();
 		
 		return patientRepository.save(patientToSave);
 		
+	}
+	
+	public Page<PatientResponseDTO> findAll(Pageable pageable) {
+		return patientRepository.findAllByActiveTrue(pageable);
+	}
+	
+	public PatientResponseDTO findById(Long id) {
+		return patientRepository.findByIdAndActiveTrue(id);
 	}
 }
