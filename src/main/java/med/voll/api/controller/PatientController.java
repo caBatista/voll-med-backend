@@ -32,18 +32,22 @@ public class PatientController {
 	
 	@GetMapping
 	public ResponseEntity<Page<PatientResponseDTO>> findAll(@PageableDefault(sort = "name") Pageable pageable) {
-		var patients = patientService.findAll(pageable);
+		var page = patientService.findAll(pageable);
 		
-		if(patients.isEmpty()){
+		if(page.getTotalElements() == 0) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(patients);
+		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("{id}")
 	public ResponseEntity<PatientResponseDTO> findById(@PathVariable Long id){
 		var patient = patientService.findById(id);
+		
+		if(patient == null){
+			return ResponseEntity.notFound().build();
+		}
 		
 		return ResponseEntity.ok(patient);
 	}

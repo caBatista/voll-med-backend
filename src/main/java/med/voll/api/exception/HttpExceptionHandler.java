@@ -29,4 +29,14 @@ public class HttpExceptionHandler {
 	public ResponseEntity handleJWTCreationException(JWTCreationException e){
 		return ResponseEntity.badRequest().body("Error creating token");
 	}
+	
+	@ExceptionHandler(ObjectUpdateException.class)
+	public ResponseEntity handleObjectUpdateException(ObjectUpdateException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(ObjectDeleteException.class)
+	public ResponseEntity handleObjectDeleteException(ObjectDeleteException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
 }

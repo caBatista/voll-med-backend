@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.PatientCrRequestDTO;
 import med.voll.api.dto.PatientResponseDTO;
 import med.voll.api.dto.PatientUpRequestDTO;
+import med.voll.api.exception.ObjectUpdateException;
 import med.voll.api.model.Address;
 import med.voll.api.model.Patient;
 import med.voll.api.repository.PatientRepository;
@@ -51,12 +52,12 @@ public class PatientService {
 	public PatientResponseDTO findById(Long id) {
 		var patientOptional = patientRepository.findByIdAndActiveTrue(id);
 		
-		return patientOptional.isPresent() ? new PatientResponseDTO(patientOptional.get()) : null;
+		return patientOptional.map(PatientResponseDTO::new).orElse(null);
 	}
 	
 	public PatientResponseDTO updatePatient(@Valid PatientUpRequestDTO patientDTO) {
 		var patient = patientRepository.findById(patientDTO.id())
-				.orElseThrow();
+				.orElseThrow(() -> new ObjectUpdateException("Patient not found"));
 		
 		patient.update(patientDTO);
 		
@@ -65,7 +66,7 @@ public class PatientService {
 	
 	public void deletePatient(Long id) {
 		var patient = patientRepository.findById(id)
-				.orElseThrow();
+				.orElseThrow(() -> new ObjectUpdateException("Patient not found"));
 		
 		patient.delete();
 	}
