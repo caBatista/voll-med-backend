@@ -2,6 +2,7 @@ package med.voll.api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import med.voll.api.type.CancelReason;
 
 import java.time.LocalDateTime;
 
@@ -28,4 +29,14 @@ public class Appointment {
 	private Patient patient;
 	
 	private LocalDateTime date;
+	
+	private boolean active = true;
+	
+	@Enumerated(EnumType.STRING)
+	private CancelReason cancelReason;
+	
+	public void cancel(CancelReason cancelReason) {
+		this.active = false;
+		this.cancelReason = cancelReason;
+	}
 }

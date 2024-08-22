@@ -3,8 +3,10 @@ package med.voll.api.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import med.voll.api.dto.AppointmentClRequestDTO;
 import med.voll.api.dto.AppointmentRequestDTO;
 import med.voll.api.service.AppointmentService;
+import med.voll.api.type.CancelReason;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +47,13 @@ public class AppointmentController {
 		}
 		
 		return ResponseEntity.ok(appointment);
+	}
+	
+	@PostMapping("{id}/cancel")
+	@Transactional
+	public ResponseEntity cancelAppointment(@PathVariable Long id, @RequestBody AppointmentClRequestDTO appointmentClRequestDTO) {
+		appointmentService.cancelAppointment(id, appointmentClRequestDTO);
+		
+		return ResponseEntity.noContent().build();
 	}
 }

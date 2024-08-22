@@ -1,8 +1,10 @@
 package med.voll.api.service;
 
 import lombok.RequiredArgsConstructor;
+import med.voll.api.dto.AppointmentClRequestDTO;
 import med.voll.api.dto.AppointmentRequestDTO;
 import med.voll.api.dto.AppointmentResponseDTO;
+import med.voll.api.exception.AppointmentCancelException;
 import med.voll.api.exception.AppointmentCreationException;
 import med.voll.api.model.Appointment;
 import med.voll.api.model.Doctor;
@@ -58,6 +60,7 @@ public class AppointmentService {
 				.patient(patient)
 				.doctor(doctor)
 				.date(appointmentRequestDTO.date())
+				.active(true)
 				.build();
 		
 		var savedAppointment = appointmentRepository.save(appointment);
@@ -81,7 +84,7 @@ public class AppointmentService {
 		var patientAppointments = appointmentRepository.findPatientAppointments(patient.getId(), appointmentDate);
 		
 		if(patientAppointments.isPresent()){
-			throw new AppointmentCreationException("Patient already has an appointment at this day");
+			throw new AppointmentCreationException("Patient already has/had an appointment at this day");
 		}
 	}
 	
@@ -92,7 +95,7 @@ public class AppointmentService {
 		var availableDoctors = doctorRepository.findAvailableDoctorsBySpecialty(start, end, specialty);
 		
 		if(availableDoctors.isEmpty()){
-			throw new AppointmentCreationException("No available doctors specialized on " + specialty);
+			throw new AppointmentCreationException("No available doctors specialized on " + specialty + " for the specified time");
 		} else {
 			Random random = new Random();
 			return availableDoctors.get(random.nextInt(availableDoctors.size()));
@@ -109,5 +112,16 @@ public class AppointmentService {
 		var appointmentOptional = appointmentRepository.findById(id);
 		
 		return appointmentOptional.map(AppointmentResponseDTO::new).orElse(null);
+	}
+	
+	public void cancelAppointment(Long id, AppointmentClRequestDTO appointmentClRequestDTO) {
+		var appointment = appointmentRepository.findByIdAndActiveTrue(id)
+				.orElseThrow(() -> new AppointmentCancelException("Invalid appointment"));
+		
+		if(appointmentClRequestDTO.cancelReason() == null){
+			throw new AppointmentCancelException("You need to select a reason for canceling the appointment");
+		}
+		
+		appointment.cancel(appointmentClRequestDTO.cancelReason());
 	}
 }

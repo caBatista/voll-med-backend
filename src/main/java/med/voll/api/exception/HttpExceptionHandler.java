@@ -3,6 +3,7 @@ package med.voll.api.exception;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +43,16 @@ public class HttpExceptionHandler {
 	
 	@ExceptionHandler(AppointmentCreationException.class)
 	public ResponseEntity handleAppointmentCreationException(AppointmentCreationException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+		return ResponseEntity.badRequest().body("Invalid Parameters");
+	}
+	
+	@ExceptionHandler(AppointmentCancelException.class)
+	public ResponseEntity handleAppointmentCreationException(AppointmentCancelException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }

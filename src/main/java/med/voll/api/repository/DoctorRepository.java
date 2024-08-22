@@ -23,7 +23,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 			AND d.id NOT IN (
 								SELECT a.doctor.id
 								FROM Appointment a
-								WHERE a.date
+								WHERE a.active = TRUE
+								AND a.date
 								BETWEEN :start
 								AND :end
 							)
