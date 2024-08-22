@@ -21,12 +21,12 @@ public class HttpExceptionHandler {
 	}
 	
 	@ExceptionHandler(JWTVerificationException.class)
-	public ResponseEntity handleJWTVerificationException(JWTVerificationException e){
+	public ResponseEntity handleJWTVerificationException(){
 		return ResponseEntity.badRequest().body("Invalid token");
 	}
 	
 	@ExceptionHandler(JWTCreationException.class)
-	public ResponseEntity handleJWTCreationException(JWTCreationException e){
+	public ResponseEntity handleJWTCreationException(){
 		return ResponseEntity.badRequest().body("Error creating token");
 	}
 	
@@ -37,6 +37,11 @@ public class HttpExceptionHandler {
 	
 	@ExceptionHandler(ObjectDeleteException.class)
 	public ResponseEntity handleObjectDeleteException(ObjectDeleteException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(AppointmentCreationException.class)
+	public ResponseEntity handleAppointmentCreationException(AppointmentCreationException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
