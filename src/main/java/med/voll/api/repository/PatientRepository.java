@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
-	Page<PatientResponseDTO> findAllByActiveTrue(Pageable pageable);
-	
+	Page<Patient> findAllByActiveTrue(Pageable pageable);
 	Optional<Patient> findByIdAndActiveTrue(Long id);
 }

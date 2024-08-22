@@ -18,7 +18,7 @@ public class PatientService {
 	
 	private final PatientRepository patientRepository;
 	
-	public Patient createPatient(@Valid PatientCrRequestDTO patientDTO) {
+	public PatientResponseDTO createPatient(@Valid PatientCrRequestDTO patientDTO) {
 		Address addressToSave = Address.builder()
 				.street(patientDTO.address().street())
 				.zipCode(patientDTO.address().zipCode())
@@ -37,11 +37,15 @@ public class PatientService {
 				.active(true)
 				.build();
 		
-		return patientRepository.save(patientToSave);
+		var savedPatient = patientRepository.save(patientToSave);
+		
+		return new PatientResponseDTO(savedPatient);
 	}
 	
 	public Page<PatientResponseDTO> findAll(Pageable pageable) {
-		return patientRepository.findAllByActiveTrue(pageable);
+		var patientsPage = patientRepository.findAllByActiveTrue(pageable);
+		
+		return patientsPage.map(PatientResponseDTO::new);
 	}
 	
 	public PatientResponseDTO findById(Long id) {

@@ -25,10 +25,9 @@ public class PatientController {
 	public ResponseEntity createPatient(@RequestBody @Valid PatientCrRequestDTO patientDTO, UriComponentsBuilder uriBuilder) {
 		var patient = patientService.createPatient(patientDTO);
 		
-		var uri = uriBuilder.path("/patients/{id}").buildAndExpand(patient.getId()).toUri();
-		var dto = new PatientResponseDTO(patient);
+		var uri = uriBuilder.path("/patients/{id}").buildAndExpand(patient.id()).toUri();
 		
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).body(patient);
 	}
 	
 	@GetMapping
@@ -45,10 +44,6 @@ public class PatientController {
 	@GetMapping("{id}")
 	public ResponseEntity<PatientResponseDTO> findById(@PathVariable Long id){
 		var patient = patientService.findById(id);
-		
-		if(patient == null){
-			return ResponseEntity.notFound().build();
-		}
 		
 		return ResponseEntity.ok(patient);
 	}

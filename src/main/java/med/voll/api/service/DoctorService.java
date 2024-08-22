@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class DoctorService {
 	private final DoctorRepository doctorRepository;
 	
-	public Doctor createDoctor(DoctorCrRequestDTO doctorDTO) {
+	public DoctorResponseDTO createDoctor(DoctorCrRequestDTO doctorDTO) {
 		Address addressToSave = Address.builder()
 				.street(doctorDTO.address().street())
 				.zipCode(doctorDTO.address().zipCode())
@@ -36,26 +36,31 @@ public class DoctorService {
 				.active(true)
 				.build();
 		
-		return doctorRepository.save(doctorToSave);
+		var savedDoctor = doctorRepository.save(doctorToSave);
+		
+		return new DoctorResponseDTO(savedDoctor);
 	}
 	
 	public Page<DoctorResponseDTO> findAll(Pageable pageable){
-		return doctorRepository.findAllByActiveTrue(pageable);
+		var doctorsPage = doctorRepository.findAllByActiveTrue(pageable);
+	
+		return doctorsPage.map(DoctorResponseDTO::new);
 	}
 	
 	public DoctorResponseDTO findById(Long id){
-		var doctorOptional = doctorRepository.findByIdAndActiveTrue(id);
+		var doctor = doctorRepository.findByIdAndActiveTrue(id)
+				.orElseThrow();
 		
-		return doctorOptional.isPresent() ? new DoctorResponseDTO(doctorOptional.get()) : null;
+		return new DoctorResponseDTO(doctor);
 	}
 	
-	public Doctor updateDoctor(DoctorUpRequestDTO doctorDTO) {
+	public DoctorResponseDTO updateDoctor(DoctorUpRequestDTO doctorDTO) {
 		var doctor = doctorRepository.findById(doctorDTO.id())
 				.orElseThrow();
 		
 		doctor.update(doctorDTO);
 		
-		return doctor;
+		return new DoctorResponseDTO(doctor);
 	}
 	
 	public void deleteDoctor(Long id) {

@@ -25,17 +25,16 @@ public class DoctorController {
 	public ResponseEntity<DoctorResponseDTO> createDoctor(@RequestBody @Valid DoctorCrRequestDTO doctorDTO, UriComponentsBuilder uriBuilder) {
 		var doctor = doctorService.createDoctor(doctorDTO);
 		
-		var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
-		var dto = new DoctorResponseDTO(doctor);
+		var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.id()).toUri();
 		
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).body(doctor);
 	}
 	
 	@GetMapping
 	public ResponseEntity<Page<DoctorResponseDTO>> findAll(@PageableDefault() Pageable pageable) {
 		var page = doctorService.findAll(pageable);
 		
-		if(page.getTotalElements() == 0){
+		if (page.getTotalElements() == 0) {
 			return ResponseEntity.notFound().build();
 		}
 		
@@ -44,22 +43,21 @@ public class DoctorController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id){
-		var dto = doctorService.findById(id);
+		var doctor = doctorService.findById(id);
 		
-		if(dto == null){
+		if(doctor == null){
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(dto);
+		return ResponseEntity.ok(doctor);
 	}
 	
 	@PutMapping
 	@Transactional
 	public ResponseEntity<DoctorResponseDTO> updateDoctor(@RequestBody @Valid DoctorUpRequestDTO doctorDTO) {
 		var doctor = doctorService.updateDoctor(doctorDTO);
-		var dto = new DoctorResponseDTO(doctor);
 		
-		return ResponseEntity.ok(dto);
+		return ResponseEntity.ok(doctor);
 	}
 	
 	@DeleteMapping("{id}")
