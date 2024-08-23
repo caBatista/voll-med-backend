@@ -47,7 +47,7 @@ public class HttpExceptionHandler {
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+	public ResponseEntity handleHttpMessageNotReadableException(){
 		return ResponseEntity.badRequest().body("Invalid Parameters");
 	}
 	

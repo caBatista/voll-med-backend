@@ -4,9 +4,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.dto.AppointmentClRequestDTO;
-import med.voll.api.dto.AppointmentRequestDTO;
+import med.voll.api.dto.AppointmentCrRequestDTO;
 import med.voll.api.service.AppointmentService;
-import med.voll.api.type.CancelReason;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class AppointmentController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity createAppointment(@Valid @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
-		var appointment = appointmentService.createAppointment(appointmentRequestDTO);
+	public ResponseEntity createAppointment(@Valid @RequestBody AppointmentCrRequestDTO appointmentCrRequestDTO) {
+		var appointment = appointmentService.createAppointment(appointmentCrRequestDTO);
 		
 		return ResponseEntity.ok(appointment);
 	}

@@ -5,7 +5,7 @@ import med.voll.api.type.Specialty;
 
 import java.time.LocalDateTime;
 
-public record AppointmentRequestDTO(
+public record AppointmentCrRequestDTO(
 	Long doctorId,
 	
 	Specialty doctorSpecialty,
